@@ -17,7 +17,6 @@ import java.util.Calendar;
 public class ClockService extends Service {
 
     private static final String CHANNEL_ID = "heuretv";
-    private static final long SHOW_MS = 10_000;
 
     private int lastKey = -1;
     private long lastShown = System.currentTimeMillis();
@@ -77,7 +76,9 @@ public class ClockService extends Service {
         }
         lastShown = now;
 
-        ClockOverlay.show(this, SHOW_MS);
+        long showMs = getSharedPreferences(MainActivity.PREFS, MODE_PRIVATE)
+                .getInt(MainActivity.KEY_DURATION, MainActivity.DEFAULT_DURATION) * 1000L;
+        ClockOverlay.show(this, showMs);
     }
 
     private Notification buildNotification() {
